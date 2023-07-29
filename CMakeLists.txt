@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.26)
+project(forge)
+
+set(FORGE_SOURCES ${CMAKE_SOURCE_DIR}/src/matrix.hpp)
+
+include(${CMAKE_SOURCE_DIR}/deps/CMakeLists.txt)
+add_subdirectory(test)
+
+add_executable(forge
+    ${FORGE_SOURCES}
+    src/main.cpp)
+
+target_compile_features(forge PRIVATE cxx_std_20)
+target_compile_options(forge PRIVATE
+    -Wall
+    -Wextra
+    -pedantic-errors
+    -ggdb3
+    -O0
+    -fsanitize=address,undefined,
+    -fno-omit-frame-pointer)
+
+target_link_options(forge PRIVATE -fsanitize=address,undefined)
+target_link_libraries(forge PRIVATE fmt::fmt)

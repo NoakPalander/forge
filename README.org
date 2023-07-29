@@ -1,0 +1,25 @@
+* Forge
+Dependency-free and fast matrix library and algorithms.
+
+* Building
+** Library
+Currently this is shipped as an executable for easier development, to build it run:
+#+begin_src bash
+$ mkdir build
+$ cd build
+$ cmake -S ../ -B .
+$ cmake --build . --target forge
+#+end_src
+
+Alternatively you can use ~--target all~ if you want to build everything.
+
+** Tests
+The project contains several unit tests that can be compiled separately with:
+#+begin_src bash
+$ mkdir build
+$ cd build
+$ cmake -S ../ -B .
+$ cmake --build . --target forge-test
+#+end_src
+
+The tests is a separate target as ~Catch2~ might not want to be downloaded & compiled every time we build the library. The test executable will be located at ~forge/build/test/forge-test~
