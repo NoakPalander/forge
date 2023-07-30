@@ -15,13 +15,13 @@ namespace forge {
     template<typename T>
     class Matrix {
     public:
-        // TODO: These
         using value_type = T;
         using iterator_category = RowIterator<value_type>::iterator_category;
         using difference_type = RowIterator<value_type>::difference_type;
         using pointer = T*;
         using const_pointer = T const*;
         using reference = T&;
+        using const_reference = T const&;
         using size_type = std::size_t;
 
     private:
@@ -30,6 +30,9 @@ namespace forge {
         std::vector<T> buffer_;
 
     public:
+        constexpr Matrix(size_type rows, size_type cols, T const& value = T{})
+            : rows_(rows), cols_(cols), buffer_(rows * cols, value) {}
+
         constexpr Matrix(std::initializer_list<T> data, size_type rows, size_type cols)
             : rows_(rows), cols_(cols)
         {
@@ -89,31 +92,46 @@ namespace forge {
             return RowIterator(buffer_.data() + buffer_.size());
         }
 
+        constexpr reference at(int row, int col) noexcept {
+            assert(row >= 0 && static_cast<size_type>(row) < rows_);
+            assert(col >= 0 && static_cast<size_type>(col) < cols_);
+
+            return buffer_[static_cast<size_type>(row) * cols_ + static_cast<size_type>(col)];
+        }
+
+        constexpr const_reference at(int row, int col) const noexcept {
+            assert(row >= 0 && static_cast<size_type>(row) < rows_);
+            assert(col >= 0 && static_cast<size_type>(col) < cols_);
+
+            return buffer_[static_cast<size_type>(row) * cols_ + static_cast<size_type>(col)];
+        }
+
         constexpr auto row(size_type index) noexcept {
             assert(index < rows_);
 
-            RowIterator<value_type> first = begin() + static_cast<int>(index * cols_);
-            RowIterator<value_type> last = first + static_cast<int>(cols_);
-
-            return std::ranges::subrange(first, last, cols_);
+            RowIterator<value_type> it = begin() + static_cast<int>(index * cols_);
+            return std::views::counted(it, static_cast<difference_type>(cols_));
         }
 
-        constexpr std::ranges::subrange<RowIterator<value_type>> row(size_type index) const noexcept {
+        constexpr auto row(size_type index) const noexcept {
             assert(index < rows_);
 
-            RowIterator<value_type> first = begin() + static_cast<int>(index * cols_);
-            RowIterator<value_type> last = first + static_cast<int>(cols_);
-
-            return std::ranges::subrange(first, last, cols_);
+            RowIterator<value_type> it = begin() + static_cast<int>(index * cols_);
+            return std::views::counted(it, static_cast<difference_type>(cols_));
         }
 
-        constexpr std::ranges::subrange<ColIterator<value_type>> col(size_type index) noexcept {
+        constexpr auto col(size_type index) noexcept {
             assert(index < cols_);
 
             auto first = std::to_address(begin() + static_cast<int>(index));
-            auto last = std::to_address(buffer_.end());
+            return std::views::counted(ColIterator(first, cols_), static_cast<difference_type>(rows_));
+        }
 
-            return std::ranges::subrange(ColIterator<value_type>(first, cols_), ColIterator<value_type>(last, cols_));
+        constexpr auto col(size_type index) const noexcept {
+            assert(index < cols_);
+
+            auto first = std::to_address(begin() + static_cast<int>(index));
+            return std::views::counted(ColIterator(first, cols_), static_cast<difference_type>(rows_));
         }
     };
 }
