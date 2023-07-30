@@ -16,12 +16,12 @@ namespace forge {
     class Matrix {
     public:
         // TODO: These
-        using difference_type = std::ptrdiff_t;
         using value_type = T;
+        using iterator_category = RowIterator<value_type>::iterator_category;
+        using difference_type = RowIterator<value_type>::difference_type;
         using pointer = T*;
         using const_pointer = T const*;
         using reference = T&;
-        using iterator_category = RowIterator<value_type>::iterator_category;
         using size_type = std::size_t;
 
     private:
@@ -107,14 +107,14 @@ namespace forge {
             return std::ranges::subrange(first, last, cols_);
         }
 
-        /*constexpr std::ranges::subrange<ColIterator<value_type>> col(size_type index) noexcept {
+        constexpr std::ranges::subrange<ColIterator<value_type>> col(size_type index) noexcept {
             assert(index < cols_);
 
-            auto first = begin() + index;
-            auto last = first + cols_ * (rows_ - 1);
+            auto first = std::to_address(begin() + static_cast<int>(index));
+            auto last = std::to_address(buffer_.end());
 
-            return std::ranges::subrange(first, last);
-        }*/
+            return std::ranges::subrange(ColIterator<value_type>(first, cols_), ColIterator<value_type>(last, cols_));
+        }
     };
 }
 

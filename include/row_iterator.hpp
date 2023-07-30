@@ -2,7 +2,6 @@
 #define FORGE_ROW_ITERATOR_HPP
 
 #include <iterator>
-#include <ranges>
 
 namespace forge {
     template<typename T>
@@ -50,8 +49,17 @@ namespace forge {
             return copy;
         }
 
-        constexpr reference operator+=(int count) noexcept {
-            return ptr_ += count;
+        constexpr RowIterator& operator+=(int count) noexcept {
+            ptr_ += count;
+            return *this;
+        }
+
+        friend constexpr RowIterator operator-(RowIterator iter, int count) noexcept {
+            return RowIterator(iter.ptr_ - count);
+        }
+
+        friend constexpr RowIterator operator-(int count, RowIterator iter) noexcept {
+            return RowIterator(iter.ptr_ - count);
         }
 
         constexpr RowIterator operator--() noexcept {
@@ -65,20 +73,13 @@ namespace forge {
             return copy;
         }
 
-        friend constexpr RowIterator operator-(RowIterator iter, int count) noexcept {
-            return RowIterator(iter.ptr_ - count);
-        }
-
-        friend constexpr RowIterator operator-(int count, RowIterator iter) noexcept {
-            return RowIterator(iter.ptr_ - count);
-        }
-
-        constexpr difference_type operator-(RowIterator const& other) const noexcept {
+        constexpr difference_type operator-(RowIterator other) const noexcept {
             return ptr_ - other.ptr_;
         }
 
-        constexpr reference operator-=(int count) noexcept {
-            return ptr_ -= count;
+        constexpr RowIterator& operator-=(int count) noexcept {
+            ptr_ -= count;
+            return *this;
         }
 
         constexpr reference operator[](int index) noexcept {
