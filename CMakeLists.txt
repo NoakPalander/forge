@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.26)
 project(forge)
 
-set(FORGE_SOURCES ${CMAKE_SOURCE_DIR}/src/matrix.hpp)
+set(FORGE_SOURCES
+    ${CMAKE_SOURCE_DIR}/include/matrix.hpp
+    ${CMAKE_SOURCE_DIR}/include/row_iterator.hpp
+    ${CMAKE_SOURCE_DIR}/include/col_iterator.hpp)
 
 include(${CMAKE_SOURCE_DIR}/deps/CMakeLists.txt)
 add_subdirectory(test)
@@ -10,10 +13,12 @@ add_executable(forge
     ${FORGE_SOURCES}
     src/main.cpp)
 
+target_include_directories(forge PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_compile_features(forge PRIVATE cxx_std_20)
 target_compile_options(forge PRIVATE
     -Wall
     -Wextra
+    -Wconversion
     -pedantic-errors
     -ggdb3
     -O0

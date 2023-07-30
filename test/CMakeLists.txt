@@ -7,10 +7,12 @@ add_executable(forge-test
     ${FORGE_SOURCES}
     test.cpp)
 
+target_include_directories(forge-test PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_compile_features(forge-test PRIVATE cxx_std_20)
 target_compile_options(forge-test PRIVATE
     -Wall
     -Wextra
+    -Wconversion
     -pedantic-errors
     -ggdb3
     -O0
