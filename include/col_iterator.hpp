@@ -13,7 +13,6 @@ namespace forge {
         using value_type = T;
         using pointer = T*;
         using reference = T&;
-        using const_reference = T const&;
         using size_type = std::size_t;
 
     private:
@@ -35,8 +34,8 @@ namespace forge {
             return ptr_;
         }
 
-        friend constexpr ColIterator operator+(ColIterator iter, int count) noexcept {
-            return ColIterator(iter.ptr_ + static_cast<int>(iter.cols_) * count, iter.cols_);
+        constexpr ColIterator operator+(int count) const noexcept {
+            return ColIterator(ptr_ + static_cast<int>(cols_) * count, cols_);
         }
 
         friend constexpr ColIterator operator+(int count, ColIterator iter) noexcept {
@@ -54,13 +53,13 @@ namespace forge {
             return copy;
         }
 
-        constexpr ColIterator operator+=(int count) noexcept {
-            ptr_ =+ static_cast<int>(cols_) * count;
+        constexpr ColIterator& operator+=(int count) noexcept {
+            ptr_ += static_cast<int>(cols_) * count;
             return *this;
         }
 
-        friend constexpr ColIterator operator-(ColIterator iter, int count) noexcept {
-            return ColIterator(iter.ptr_ - static_cast<int>(iter.cols_) * count, iter.cols_);
+        constexpr ColIterator operator-(int count) const noexcept {
+            return ColIterator(ptr_ - static_cast<int>(cols_) * count, cols_);
         }
 
         friend constexpr ColIterator operator-(int count, ColIterator iter) noexcept {
@@ -78,21 +77,17 @@ namespace forge {
             return copy;
         }
 
-        constexpr difference_type operator-(ColIterator other) const noexcept {
+        constexpr difference_type operator-(ColIterator const& other) const noexcept {
             assert(cols_ > 0);
             return (ptr_ - other.ptr_) / static_cast<difference_type>(cols_);
         }
 
-        constexpr ColIterator operator-=(int count) noexcept {
-            ptr_ =+ static_cast<int>(cols_) * count;
+        constexpr ColIterator& operator-=(int count) noexcept {
+            ptr_ -= static_cast<int>(cols_) * count;
             return *this;
         }
 
-        constexpr reference operator[](int index) noexcept {
-            return *(ptr_ + static_cast<int>(cols_) * index);
-        }
-
-        constexpr const_reference operator[](int index) const noexcept {
+        constexpr reference operator[](int index) const noexcept {
             return *(ptr_ + static_cast<int>(cols_) * index);
         }
 

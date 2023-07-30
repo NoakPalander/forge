@@ -30,11 +30,11 @@ namespace forge {
             return ptr_;
         }
 
-        friend constexpr RowIterator operator+(RowIterator iter, int count) noexcept {
-            return RowIterator(iter.ptr_ + count);
+        constexpr RowIterator operator+(difference_type count) const noexcept {
+            return RowIterator(ptr_ + count);
         }
 
-        friend constexpr RowIterator operator+(int count, RowIterator iter) noexcept {
+        friend constexpr RowIterator operator+(difference_type count, RowIterator const& iter) noexcept {
             return RowIterator(iter.ptr_ + count);
         }
 
@@ -49,20 +49,20 @@ namespace forge {
             return copy;
         }
 
-        constexpr RowIterator& operator+=(int count) noexcept {
+        constexpr RowIterator& operator+=(difference_type count) noexcept {
             ptr_ += count;
             return *this;
         }
 
-        friend constexpr RowIterator operator-(RowIterator iter, int count) noexcept {
+        constexpr RowIterator operator-(difference_type count) const noexcept {
+            return RowIterator(ptr_ - count);
+        }
+
+        friend constexpr RowIterator operator-(difference_type count, RowIterator const& iter) noexcept {
             return RowIterator(iter.ptr_ - count);
         }
 
-        friend constexpr RowIterator operator-(int count, RowIterator iter) noexcept {
-            return RowIterator(iter.ptr_ - count);
-        }
-
-        constexpr RowIterator operator--() noexcept {
+        constexpr RowIterator& operator--() noexcept {
             --ptr_;
             return *this;
         }
@@ -73,20 +73,16 @@ namespace forge {
             return copy;
         }
 
-        constexpr difference_type operator-(RowIterator other) const noexcept {
+        constexpr difference_type operator-(RowIterator const& other) const noexcept {
             return ptr_ - other.ptr_;
         }
 
-        constexpr RowIterator& operator-=(int count) noexcept {
+        constexpr RowIterator& operator-=(difference_type count) noexcept {
             ptr_ -= count;
             return *this;
         }
 
-        constexpr reference operator[](int index) noexcept {
-            return ptr_[index];
-        }
-
-        constexpr const_reference operator[](int index) const noexcept {
+        constexpr reference operator[](difference_type index) const noexcept {
             return ptr_[index];
         }
 
