@@ -1,7 +1,7 @@
 #ifndef FORGE_TEST_MATRIX_HPP
 #define FORGE_TEST_MATRIX_HPP
 
-#include "matrix.hpp"
+#include "forge/matrix.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 #include <vector>
