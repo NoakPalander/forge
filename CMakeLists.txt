@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.26)
 project(forge)
 
 set(FORGE_SOURCES
-    ${CMAKE_SOURCE_DIR}/include/matrix.hpp
-    ${CMAKE_SOURCE_DIR}/include/row_iterator.hpp
-    ${CMAKE_SOURCE_DIR}/include/col_iterator.hpp)
+    ${CMAKE_SOURCE_DIR}/include/forge/matrix.hpp
+    ${CMAKE_SOURCE_DIR}/include/forge/row_iterator.hpp
+    ${CMAKE_SOURCE_DIR}/include/forge/col_iterator.hpp
+    ${CMAKE_SOURCE_DIR}/include/forge/math.hpp)
 
 include(${CMAKE_SOURCE_DIR}/deps/CMakeLists.txt)
 add_subdirectory(test)
