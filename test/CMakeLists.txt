@@ -5,6 +5,9 @@ include(${CMAKE_SOURCE_DIR}/deps/CMakeLists.txt)
 
 add_executable(forge-test
     ${FORGE_SOURCES}
+    test_matrix.hpp
+    test_row_iterator.hpp
+    test_col_iterator.hpp
     test.cpp)
 
 target_include_directories(forge-test PRIVATE ${CMAKE_SOURCE_DIR}/include)
