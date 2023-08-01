@@ -5,10 +5,12 @@ set(FORGE_SOURCES
     ${CMAKE_SOURCE_DIR}/include/forge/matrix.hpp
     ${CMAKE_SOURCE_DIR}/include/forge/row_iterator.hpp
     ${CMAKE_SOURCE_DIR}/include/forge/col_iterator.hpp
-    ${CMAKE_SOURCE_DIR}/include/forge/math.hpp)
+    ${CMAKE_SOURCE_DIR}/include/forge/math.hpp
+    ${CMAKE_SOURCE_DIR}/include/forge/elem.hpp)
 
 include(${CMAKE_SOURCE_DIR}/deps/CMakeLists.txt)
 add_subdirectory(test)
+add_subdirectory(benchmark)
 
 add_executable(forge
     ${FORGE_SOURCES}
