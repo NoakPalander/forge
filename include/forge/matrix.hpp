@@ -35,7 +35,7 @@ namespace forge {
         constexpr Matrix(std::initializer_list<T> data, int rows, int cols)
             : rows_(rows), cols_(cols)
         {
-            assert(rows * cols == data.size());
+            assert(rows * cols == static_cast<int>(data.size()));
             std::ranges::copy(data, std::back_inserter(buffer_));
         }
 
@@ -73,13 +73,13 @@ namespace forge {
         }
 
         constexpr auto rows_view() noexcept {
-            return std::views::iota(0, static_cast<int>(rows_)) | std::views::transform([this](int indexconst ) {
+            return std::views::iota(0, static_cast<int>(rows_)) | std::views::transform([this](int index) {
                 return row(index);
             });
         }
 
         constexpr auto rows_view() const noexcept {
-            return std::views::iota(0, static_cast<int>(rows_)) | std::views::transform([this](int indexconst ) {
+            return std::views::iota(0, static_cast<int>(rows_)) | std::views::transform([this](int index) {
                 return row(index);
             });
         }
@@ -144,14 +144,14 @@ namespace forge {
         constexpr auto row(int index) noexcept {
             assert(index >= 0 && index < rows_);
 
-            auto it = RowIterator<value_type>(buffer_.data()) + index * static_cast<int>(cols_);
+            auto it = RowIterator(buffer_.data()) + index * static_cast<int>(cols_);
             return std::views::counted(it, static_cast<std::ptrdiff_t>(cols_));
         }
 
         constexpr auto row(int index) const noexcept {
             assert(index >= 0 && index < rows_);
 
-            auto it = RowIterator<value_type>(buffer_.data()) + static_cast<int>(index * cols_);
+            auto it = RowIterator(buffer_.data()) + static_cast<int>(index * cols_);
             return std::views::counted(it, static_cast<std::ptrdiff_t>(cols_));
         }
 
