@@ -1,5 +1,5 @@
 * Forge
-Dependency-free and fast matrix library and algorithms.
+Stuff
 
 * Building
 ** Library
